@@ -32,14 +32,18 @@ namespace TodoApp.Models {
         /// </summary>
         /// <returns></returns>
         private IEnumerable<TaskItem> MapTasksListToDbResponse (IEnumerable<TaskItemReq> subTasks) {
-            foreach(var task in subTasks) {
-                yield return new TaskItem {
-                    Id = Guid.NewGuid(),
-                    Title = task.Title,
-                    Status = task.Status,
-                    CreatedDate = DateTime.Now
-                };
-            }
+            if(subTasks != null) {
+                foreach (var task in subTasks) {
+                    yield return new TaskItem {
+                        Id = Guid.NewGuid(),
+                        Title = task.Title,
+                        Status = task.Status,
+                        CreatedDate = DateTime.Now
+                    };
+                }
+            } else {
+                yield return null;
+            }            
         }
     }
 }

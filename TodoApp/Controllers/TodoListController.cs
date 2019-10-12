@@ -15,7 +15,7 @@ namespace TodoApp.Controllers {
         public ActionResult<IEnumerable<TodoItem>> GetTodoList([FromQuery]FilterType filterType = FilterType.All) {
             var result = new List<TodoItem>();
 
-            if(filterType == FilterType.Active) {
+            if (filterType == FilterType.Active) {
                 result = _data.Where(a => a.Status == StatusType.Active).ToList();
             } else if (filterType == FilterType.Completed) {
                 result = _data.Where(a => a.Status == StatusType.Completed).ToList();
@@ -30,7 +30,7 @@ namespace TodoApp.Controllers {
         public ActionResult<bool> AddTodoItem(AddTodoItemReq request) {
             try {
                 _data.Add(request.MapTodoItemToDbResponse());
-                return Ok();
+                return Ok(true);
             } catch (Exception ex) {
                 return BadRequest(ex);
             }
@@ -42,7 +42,7 @@ namespace TodoApp.Controllers {
                 var findItemIndex = _data.FindIndex(ind => ind.Id == request.Id);
                 if (findItemIndex > -1) {
                     _data[findItemIndex] = request.MapTodoItemToDbResponse();
-                    return Ok();
+                    return Ok(true);
                 } else {
                     return NotFound();
                 }
@@ -57,7 +57,7 @@ namespace TodoApp.Controllers {
                 var findItemIndex = _data.FindIndex(ind => ind.Id == request.Id);
                 if (findItemIndex > -1) {
                     _data[findItemIndex].Status = request.Status;
-                    return Ok();
+                    return Ok(true);
                 } else {
                     return NotFound();
                 }
@@ -72,7 +72,7 @@ namespace TodoApp.Controllers {
                 var findItem = _data.Find(ind => ind.Id == request.Id);
                 if (findItem != null) {
                     _data.Remove(findItem);
-                    return Ok();
+                    return Ok(true);
                 } else {
                     return NotFound();
                 }
@@ -88,7 +88,7 @@ namespace TodoApp.Controllers {
                 if (todoItem != null) {
                     todoItem.SubTasks.Add(request.MapTaskItemToDbResponse());
                 }
-                return Ok();
+                return Ok(true);
             } catch (Exception ex) {
                 return BadRequest(ex);
             }
@@ -102,7 +102,7 @@ namespace TodoApp.Controllers {
                     var findItemIndex = todoItem.SubTasks.FindIndex(ind => ind.Id == request.TaskItemId);
                     if (findItemIndex > -1) {
                         todoItem.SubTasks[findItemIndex] = request.MapTaskItemToDbResponse();
-                        return Ok();
+                        return Ok(true);
                     } else {
                         return NotFound();
                     }
@@ -122,7 +122,7 @@ namespace TodoApp.Controllers {
                     var findItemIndex = todoItem.SubTasks.FindIndex(ind => ind.Id == request.TaskItemId);
                     if (findItemIndex > -1) {
                         todoItem.SubTasks[findItemIndex].Status = request.Status;
-                        return Ok();
+                        return Ok(true);
                     } else {
                         return NotFound();
                     }
@@ -140,9 +140,9 @@ namespace TodoApp.Controllers {
                 var todoItem = _data.FirstOrDefault(a => a.Id == request.TodoItemId);
                 if (todoItem != null && todoItem.SubTasks.Any()) {
                     var subItemFind = todoItem.SubTasks.Find(x => x.Id == request.TaskItemId);
-                    if(subItemFind != null) {
+                    if (subItemFind != null) {
                         todoItem.SubTasks.Remove(subItemFind);
-                        return Ok();
+                        return Ok(true);
                     } else {
                         return NotFound();
                     }
