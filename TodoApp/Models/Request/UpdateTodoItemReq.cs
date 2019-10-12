@@ -23,7 +23,8 @@ namespace TodoApp.Models {
                 Description = Description,
                 DueDate = DueDate,
                 Status = Status,
-                SubTasks = MapTasksListToDbResponse(SubTasks).ToList()
+                SubTasks = MapTasksListToDbResponse(SubTasks).ToList(),
+                CreatedDate = DateTime.Now // updating created date instead of making a new property so to sort the list of tasks
             };
         }
 
@@ -36,7 +37,8 @@ namespace TodoApp.Models {
                 yield return new TaskItem {
                     Id = Guid.NewGuid(),
                     Title = task.Title,
-                    Status = task.Status
+                    Status = task.Status,
+                    CreatedDate = DateTime.Now
                 };
             }
         }

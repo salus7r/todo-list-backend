@@ -10,5 +10,6 @@ namespace TodoApp.Models {
         public DateTime? DueDate { get; set; }
         public StatusType Status { get; set; }
         public List<TaskItem> SubTasks { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

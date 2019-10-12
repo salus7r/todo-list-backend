@@ -20,7 +20,8 @@ namespace TodoApp.Models {
             return new TaskItem {
                 Id = Guid.NewGuid(),
                 Title = Title,
-                Status = Status
+                Status = Status,
+                CreatedDate = DateTime.Now
             };
         }
     }

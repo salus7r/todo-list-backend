@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 
 namespace TodoApp.Enums {
-    public enum FilterTypes {
+    public enum FilterType {
 
         [Description("To see all tasks")]
         All = 1,

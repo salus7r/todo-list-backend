@@ -11,7 +11,8 @@ namespace TodoApp.Models {
             Description = $"Todo Item {index} Description",
             DueDate = DateTime.Now.AddDays(index),
             Status = index % 2 == 0 ? StatusType.Active : StatusType.Completed,
-            SubTasks = new List<TaskItem>()
+            SubTasks = new List<TaskItem>(),
+            CreatedDate = DateTime.Now
         }).ToList();
     }
 }
