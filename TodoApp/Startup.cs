@@ -16,9 +16,7 @@ namespace TodoApp {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            //services.AddMvc();
-
+            
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new Info { Title = "Todo List API", Version = "v1" });
             });
@@ -40,6 +38,10 @@ namespace TodoApp {
 
             app.UseSwaggerUI(c => {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Todo List API V1");
+            });
+
+            app.Run(async context => {
+                context.Response.Redirect("swagger/index.html");
             });
         }
     }
