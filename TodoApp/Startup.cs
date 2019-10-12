@@ -12,9 +12,11 @@ namespace TodoApp {
         }
 
         public IConfiguration Configuration { get; }
-
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
+            services.AddCors();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             
             services.AddSwaggerGen(c => {
@@ -30,6 +32,11 @@ namespace TodoApp {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            // Make sure you call this before calling app.UseMvc()
+            app.UseCors(
+                options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials()
+            );
 
             app.UseHttpsRedirection();
             app.UseMvc();
