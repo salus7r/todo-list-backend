@@ -27,22 +27,24 @@ namespace TodoApp.Controllers {
         }
 
         [HttpPost("AddTodoItem")]
-        public ActionResult<bool> AddTodoItem(AddTodoItemReq request) {
+        public ActionResult<TodoItem> AddTodoItem(AddTodoItemReq request) {
             try {
-                _data.Add(request.MapTodoItemToDbResponse());
-                return Ok(true);
+                var newItem = request.MapTodoItemToDbResponse();
+                _data.Add(newItem);
+                return Ok(newItem);
             } catch (Exception ex) {
                 return BadRequest(ex);
             }
         }
 
         [HttpPut("UpdateTodoItem")]
-        public ActionResult<bool> UpdateTodoItem(UpdateTodoItemReq request) {
+        public ActionResult<TodoItem> UpdateTodoItem(UpdateTodoItemReq request) {
             try {
                 var findItemIndex = _data.FindIndex(ind => ind.Id == request.Id);
                 if (findItemIndex > -1) {
-                    _data[findItemIndex] = request.MapTodoItemToDbResponse();
-                    return Ok(true);
+                    var updateItem = request.MapTodoItemToDbResponse();
+                    _data[findItemIndex] = updateItem;
+                    return Ok(updateItem);
                 } else {
                     return NotFound();
                 }
@@ -82,27 +84,31 @@ namespace TodoApp.Controllers {
         }
 
         [HttpPost("AddTaskItem")]
-        public ActionResult<bool> AddTaskItem(AddTaskItemReq request) {
+        public ActionResult<TaskItem> AddTaskItem(AddTaskItemReq request) {
             try {
                 var todoItem = _data.FirstOrDefault(a => a.Id == request.TodoItemId);
                 if (todoItem != null) {
-                    todoItem.SubTasks.Add(request.MapTaskItemToDbResponse());
+                    var newItem = request.MapTaskItemToDbResponse();
+                    todoItem.SubTasks.Add(newItem);
+                    return Ok(newItem);
+                } else {
+                    return NotFound();
                 }
-                return Ok(true);
             } catch (Exception ex) {
                 return BadRequest(ex);
             }
         }
 
         [HttpPut("UpdateTaskItem")]
-        public ActionResult<bool> UpdateTaskItem(UpdateTaskItemReq request) {
+        public ActionResult<TaskItem> UpdateTaskItem(UpdateTaskItemReq request) {
             try {
                 var todoItem = _data.FirstOrDefault(a => a.Id == request.TodoItemId);
                 if (todoItem != null) {
                     var findItemIndex = todoItem.SubTasks.FindIndex(ind => ind.Id == request.TaskItemId);
                     if (findItemIndex > -1) {
-                        todoItem.SubTasks[findItemIndex] = request.MapTaskItemToDbResponse();
-                        return Ok(true);
+                        var updateItem = request.MapTaskItemToDbResponse();
+                        todoItem.SubTasks[findItemIndex] = updateItem;
+                        return Ok(updateItem);
                     } else {
                         return NotFound();
                     }
